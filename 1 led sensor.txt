@@ -1,0 +1,39 @@
+ int trigger = 10;
+ int echo = 11;
+ int led = 6;
+
+float stime;
+float distance;
+
+void setup() {
+  
+  pinMode(trigger, OUTPUT);
+  pinMode(echo, INPUT);
+  pinMode(led, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  digitalWrite(trigger, LOW);
+  delayMicroseconds(2);
+
+  digitalWrite(trigger, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigger, LOW);
+
+  stime = pulseIn(echo, HIGH);
+  distance = (0.0343 * stime) / 2;
+
+  Serial.print("Distance: ");
+   Serial.println(distance);
+
+  if (distance <= 150) {
+   
+    digitalWrite(led, HIGH);
+  }
+
+  else {
+    digitalWrite(led, LOW);
+  }
+  delay(500);
+}
