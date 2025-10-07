@@ -1,0 +1,60 @@
+int trigPin = 6;
+int echoPin = 5;
+int LED1 = 2;
+int LED2 = 3;
+int BUZZER = 4;  // Changed from pin 1 to 4 (safer)
+
+float duration, distance;
+
+void setup() {
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+  pinMode(LED1, OUTPUT);
+  pinMode(LED2, OUTPUT);
+  pinMode(BUZZER, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  // Trigger the ultrasonic sensor
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+
+  // Measure duration of echo
+  duration = pulseIn(echoPin, HIGH);
+
+  // Convert to distance in cm
+  distance = (duration * 0.034) / 2;
+
+  // Print distance once
+  Serial.print("Distance: ");
+  Serial.print(distance);
+  Serial.println(" cm");
+
+  digitalWrite(LED1, LOW);
+  digitalWrite(LED2, LOW);
+  digitalWrite(BUZZER, LOW);
+
+  if (distance >= 150) {
+    digitalWrite(LED1, HIGH);
+
+  } 
+  else if (distance >= 100 && distance < 150) {
+    digitalWrite(LED1, HIGH);
+    digitalWrite(LED2, LOW);
+  } 
+  else if (distance >= 50 && distance < 100) {
+    digitalWrite(LED1, HIGH);
+    digitalWrite(LED2, HIGH);
+  } 
+  else if (distance < 50) {
+    digitalWrite(LED1, HIGH);
+    digitalWrite(LED2, HIGH);
+    digitalWrite(BUZZER, HIGH);
+  }
+
+  delay(500);
+}
